@@ -1,10 +1,18 @@
 package com.sophia.numeralconverterrest.service;
 
+import lombok.Data;
 import org.assertj.core.util.diff.Chunk;
 import org.springframework.stereotype.Service;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.font.TextAttribute;
+import java.text.AttributedString;
+
+@Data
 @Service
 public class ConversionRequestService {
+    private AttributedString as;
     private String finalResult;
     public String conversion(int sourceBase, String num, int targetBase) {
         if (isBase(sourceBase, num)) {
@@ -28,11 +36,21 @@ public class ConversionRequestService {
                 finalResult = intResult + decResult;
             } else
                 finalResult = intResult;
+            finalResult += " = ";
 
             for (int i = 0; i < dpLoc; i++) {
-                finalResult += "( " + intNum.charAt(i) + " * " + targetBase + "\u00B3"+ " ) ";
-                if (num.length() != dpLoc) {
+                String string = String.format("(%c * %d^%d) ", intNum.charAt(i), targetBase, (intNum.length() - (i + 1)));
+                finalResult += string;
+                if (num.length() != dpLoc)
                     finalResult += "+ ";
+            }
+
+            if (!decNum.equals("")) {
+                for (int i = 1; i < decNum.length(); i++) {
+                    String string = String.format("(%c * %d^%d) ", decNum.charAt(i), targetBase, -i);
+                    finalResult += string;
+                    if (i != (decNum.length() - 1))
+                        finalResult += "+ ";
                 }
             }
 

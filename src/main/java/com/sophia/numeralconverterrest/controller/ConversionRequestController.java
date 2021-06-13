@@ -1,6 +1,7 @@
 package com.sophia.numeralconverterrest.controller;
 
 import com.sophia.numeralconverterrest.model.ConversionRequest;
+import com.sophia.numeralconverterrest.model.ResponseBody;
 import com.sophia.numeralconverterrest.service.ConversionRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ public class ConversionRequestController {
         String result = conversionRequestService.conversion(sourceBase, num, targetBase);
         if (result.isEmpty())
             return new ResponseEntity<>("Base out of range", HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        ResponseBody responseBody = new ResponseBody(result.substring(0, result.indexOf('=')), result);
+        return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
 }
