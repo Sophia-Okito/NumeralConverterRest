@@ -1,20 +1,17 @@
 package com.sophia.numeralconverterrest.service;
 
 import lombok.Data;
-import org.assertj.core.util.diff.Chunk;
 import org.springframework.stereotype.Service;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.font.TextAttribute;
-import java.text.AttributedString;
 
 @Data
 @Service
 public class ConversionRequestService {
-    private AttributedString as;
     private String finalResult;
     public String conversion(int sourceBase, String num, int targetBase) {
+        if (num.isEmpty()) {
+            return "";
+        }
         if (isBase(sourceBase, num)) {
             StringBuilder decimalNum = new StringBuilder();
             int dpLoc = num.indexOf(".");
@@ -66,7 +63,7 @@ public class ConversionRequestService {
             char c = num.charAt(i);
             if (c == '.')
                 continue;
-            if(c > numChar)
+            if(c >= numChar)
                 return false;
         }
         return true;
